@@ -231,3 +231,7 @@ def agregasi_per_produk(db: Session = Depends(get_db)):
     )
     hasil = db.execute(stmt).all()
     return hasil
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
