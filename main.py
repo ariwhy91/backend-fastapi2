@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 from fastapi import Depends, FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,6 +13,7 @@ from sqlalchemy.orm import Session, selectinload
 import auth
 import models
 import schemas
+import os
 from database import get_db
 from deps import get_current_user, require_admin
 
@@ -32,9 +34,11 @@ app.add_exception_handler(
     RateLimitExceeded, _rate_limit_exceeded_handler
 )
 
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5174")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5174"],
+    allow_origins=[FRONTEND_URL],
     allow_methods=["*"],
     allow_headers=["*"],
 )
